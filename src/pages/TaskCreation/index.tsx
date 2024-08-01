@@ -12,3 +12,5 @@ const TaskCreation: React.FC<Props> = () => {
         </IonPage>
     )
 }
+
+export default TaskCreation;
