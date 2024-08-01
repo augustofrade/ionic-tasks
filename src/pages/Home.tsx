@@ -2,6 +2,7 @@ import { IonContent, IonHeader, IonItem, IonLabel, IonList, IonPage, IonReorder,
 import './Home.css';
 import { useState } from 'react';
 import { Task } from '../types/interfaces';
+import NewTaskFAB from '../components/NewTaskFAB';
 
 const Home: React.FC = () => {
 
@@ -24,15 +25,12 @@ const Home: React.FC = () => {
   function handleReorder(event: CustomEvent<ItemReorderEventDetail>) {
     setTasks(event.detail.complete(tasks));
 
-    // Finish the reorder and position the item in the DOM based on
-    // where the gesture ended. This method can also be called directly
-    // by the reorder group
     event.detail.complete();
   }
 
   return (
     <IonPage>
-      <IonHeader>
+      <IonHeader class="ion-no-border">
         <IonToolbar>
           <IonTitle>Today</IonTitle>
         </IonToolbar>
@@ -44,8 +42,9 @@ const Home: React.FC = () => {
           </IonToolbar>
         </IonHeader>
 
+        <NewTaskFAB />
+
         <IonList>
-          {/* The reorder gesture is disabled by default, enable it to drag and drop items */}
           <IonReorderGroup disabled={false} onIonItemReorder={handleReorder}>
             {
               // TODO: change key to task ID

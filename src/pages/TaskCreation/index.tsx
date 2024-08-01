@@ -1,6 +1,6 @@
 import './index.css';
 
-import { IonPage } from '@ionic/react';
+import { IonContent, IonPage } from '@ionic/react';
 import React from 'react';
 
 interface Props { }
@@ -8,7 +8,9 @@ interface Props { }
 const TaskCreation: React.FC<Props> = () => {
     return (
         <IonPage>
-            
+            <IonContent>
+                New task
+            </IonContent>
         </IonPage>
     )
 }
