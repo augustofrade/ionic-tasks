@@ -45,7 +45,7 @@ const App: React.FC = () => (
           <Route exact path="/">
             <Redirect to="/home" />
           </Route>
-          <Route exact path="/tasks/new">
+          <Route exact path="/new-task">
             <TaskCreation />
           </Route>
           { /* TODO: add routes to tasks and details pages */ }
@@ -59,7 +59,7 @@ const App: React.FC = () => (
 
           <IonTabButton tab="tasks" href="/tasks">
             <IonIcon icon={calendarNumberOutline} />
-            <IonLabel>Calendário</IonLabel>
+            <IonLabel>Calendar</IonLabel>
           </IonTabButton>
           
 

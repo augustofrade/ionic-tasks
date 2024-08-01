@@ -4,7 +4,7 @@ import { add } from "ionicons/icons";
 const NewTaskFAB: React.FC = () => {
     return (
       <IonFab slot="fixed" vertical="bottom" horizontal="end">
-        <IonFabButton routerLink="/tasks/new">
+        <IonFabButton routerLink="/new-task">
           <IonIcon icon={add}></IonIcon>
         </IonFabButton>
       </IonFab>
