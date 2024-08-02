@@ -1,14 +1,16 @@
-import './index.css';
-
-import { IonContent, IonHeader, IonInput, IonPage, IonText, IonTextarea, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonHeader, IonInput, IonModal, IonText, IonTextarea, IonTitle, IonToolbar } from '@ionic/react';
 import React from 'react';
-import DatePicker from '../../components/DatePicker';
 
-interface Props { }
+import DatePicker from './DatePicker';
 
-const TaskCreation: React.FC<Props> = () => {
+interface TaskCreationProps {
+    modalRef: React.RefObject<HTMLIonModalElement>;
+}
+
+const TaskCreationModal: React.FC<TaskCreationProps> = (props) => {
+    
     return (
-        <IonPage>
+        <IonModal ref={props.modalRef} trigger="open-taskcreation-modal" initialBreakpoint={0.5} breakpoints={[ 0.25, 0.5 ]}>
             <IonHeader className="ion-no-border">
                 <IonToolbar>
                 <IonTitle>New Task</IonTitle>
@@ -41,8 +43,8 @@ const TaskCreation: React.FC<Props> = () => {
                 </div>
 
             </IonContent>
-        </IonPage>
+        </IonModal>
     )
 }
 
-export default TaskCreation;
+export default TaskCreationModal;
