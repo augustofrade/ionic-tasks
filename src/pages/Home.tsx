@@ -1,10 +1,27 @@
-import { IonContent, IonHeader, IonItem, IonLabel, IonList, IonPage, IonReorder, IonReorderGroup, IonTitle, IonToolbar, ItemReorderEventDetail } from '@ionic/react';
 import './Home.css';
-import { useState } from 'react';
-import { Task } from '../types/interfaces';
+
+import {
+  IonContent,
+  IonHeader,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonPage,
+  IonReorder,
+  IonReorderGroup,
+  IonTitle,
+  IonToolbar,
+  ItemReorderEventDetail,
+} from '@ionic/react';
+import { useRef, useState } from 'react';
+
 import NewTaskFAB from '../components/NewTaskFAB';
+import TaskCreationModal from '../components/TaskCreationModal';
+import { Task } from '../types/interfaces';
 
 const Home: React.FC = () => {
+
+  const taskCreationModal = useRef<HTMLIonModalElement>(null);
 
   // TODO: fetch tasks from storage
   const [tasks, setTasks] = useState<Task[]>([
@@ -57,6 +74,8 @@ const Home: React.FC = () => {
             }
           </IonReorderGroup>
         </IonList>
+
+        <TaskCreationModal modalRef={taskCreationModal} />
 
       </IonContent>
     </IonPage>

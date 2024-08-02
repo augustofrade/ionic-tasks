@@ -16,7 +16,6 @@ import { IonReactRouter } from '@ionic/react-router';
 import { Redirect, Route } from 'react-router-dom';
 
 import Home from './pages/Home';
-import TaskCreation from './pages/TaskCreation';
 import { todayOutline, calendarNumberOutline, personOutline } from 'ionicons/icons';
 
 /* Core CSS required for Ionic components to work properly */
@@ -44,9 +43,6 @@ const App: React.FC = () => (
           </Route>
           <Route exact path="/">
             <Redirect to="/home" />
-          </Route>
-          <Route exact path="/new-task">
-            <TaskCreation />
           </Route>
           { /* TODO: add routes to tasks and details pages */ }
         </IonRouterOutlet>
