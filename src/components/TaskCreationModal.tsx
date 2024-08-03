@@ -5,18 +5,48 @@ import DatePicker from './DatePicker';
 import { alarmOutline, calendarOutline, chevronForwardOutline, flagOutline, heart } from 'ionicons/icons';
 import TimePicker from './TimePicker';
 import { Priority } from '../types/enums';
+import { Task } from '../types/interfaces';
+import { StorageHandler } from '../api/StorageHandler';
 
 interface TaskCreationProps {
     modalRef: React.RefObject<HTMLIonModalElement>;
+    showToast(msg: string): void;
 }
 
 const TaskCreationModal: React.FC<TaskCreationProps> = (props) => {
+    const [title, setTitle] = useState<string | undefined>(undefined);
+    const [description, setDescription] = useState<string | undefined>(undefined);
     const [date, setDate] = useState<Date | null>(null);
     const [time, setTime] = useState<Date | null>(null);
     const [priority, setPriority] = useState<Priority | null>(null);
+
+    function onSubmitSuccess() {
+        props.showToast("Task saved successfully!");
+        props.modalRef.current?.dismiss();
+    }
+
+    function handleSubmit() {
+        // TODO: add form validation
+        const taskInfo: Task = {
+            title: title!,
+            description: description!
+        };
+        if(time && date) {
+            const taskDate = new Date(date);
+            taskDate.setHours(time.getHours(), time.getMinutes());
+            taskInfo.date = taskDate;
+        } else if(date) {
+            taskInfo.date = date;
+        }
+        if(priority) taskInfo.priority = priority;
+
+        StorageHandler.instance().set(new Date(), taskInfo)
+        .then(onSubmitSuccess)
+        .catch(err => props.showToast("Error while saving task"));
+    }
     
     return (
-        <IonModal ref={props.modalRef} trigger="open-taskcreation-modal" initialBreakpoint={0.5} breakpoints={[ 0.25, 0.5 ]}>
+        <IonModal ref={props.modalRef} trigger="open-taskcreation-modal" initialBreakpoint={0.5} breakpoints={[ 0.5, 0.7 ]}>
             <IonHeader className="ion-no-border">
                 <IonToolbar>
                 <IonTitle>New Task</IonTitle>
@@ -24,19 +54,26 @@ const TaskCreationModal: React.FC<TaskCreationProps> = (props) => {
             </IonHeader>
             <IonContent fullscreen className="ion-padding">
                 <IonInput
+                    label="Task title"
+                    labelPlacement="floating"
                     autofocus={true}
-                    placeholder="Task title"
                     required={true}
                     className="ion-margin-bottom"
+                    value={title}
+                    onIonChange={(e) => setTitle(e.detail.value as string)}
                 >
 
                 </IonInput>
                 
                 <IonTextarea
-                    placeholder="Description"
+                    label="Description"
+                    labelPlacement="floating"
                     autoGrow={true}
                     required={true}
                     className="ion-margin-bottom"
+                    value={description}
+                    onIonChange={(e) => setDescription(e.detail.value as string)}
+                    
                 >
                 
                 </IonTextarea>
@@ -60,11 +97,13 @@ const TaskCreationModal: React.FC<TaskCreationProps> = (props) => {
                     </IonSelect>
                 </IonChip>
 
-                //TODO: add labels selection
+                {
+                    //TODO: add labels selection
+                }
 
 
                 <div style={{ textAlign: "right" }}>
-                    <IonButton>
+                    <IonButton onClick={handleSubmit}>
                         <IonIcon slot="end" icon={chevronForwardOutline}></IonIcon>
                         Save
                     </IonButton>

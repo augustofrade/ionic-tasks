@@ -10,8 +10,10 @@ import {
   IonReorder,
   IonReorderGroup,
   IonTitle,
+  IonToast,
   IonToolbar,
   ItemReorderEventDetail,
+  useIonToast,
 } from '@ionic/react';
 import { useRef, useState } from 'react';
 
@@ -20,6 +22,15 @@ import TaskCreationModal from '../components/TaskCreationModal';
 import { Task } from '../types/interfaces';
 
 const Home: React.FC = () => {
+
+  const [present] = useIonToast();
+  const showToast = (message: string) => {
+    present({
+      duration: 2500,
+      position: "bottom",
+      message: message
+    })
+  }
 
   const taskCreationModal = useRef<HTMLIonModalElement>(null);
 
@@ -75,7 +86,7 @@ const Home: React.FC = () => {
           </IonReorderGroup>
         </IonList>
 
-        <TaskCreationModal modalRef={taskCreationModal} />
+        <TaskCreationModal showToast={showToast} modalRef={taskCreationModal} />
 
       </IonContent>
     </IonPage>
