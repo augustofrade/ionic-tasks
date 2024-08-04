@@ -7,4 +7,13 @@ export interface Task {
     date?: Date;
     labels?: string[]; // TODO: add label
     reminder?: boolean;
+    completed?: boolean;
+}
+
+export interface TaskItem {
+    id: string;
+    title: string;
+    description: string;
+    priority?: Priority;
+    date?: Date;
 }

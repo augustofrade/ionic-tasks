@@ -15,11 +15,12 @@ import {
   ItemReorderEventDetail,
   useIonToast,
 } from '@ionic/react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import NewTaskFAB from '../components/NewTaskFAB';
 import TaskCreationModal from '../components/TaskCreationModal';
-import { Task } from '../types/interfaces';
+import { Task, TaskItem } from '../types/interfaces';
+import { StorageHandler } from '../api/StorageHandler';
 
 const Home: React.FC = () => {
 
@@ -34,21 +35,17 @@ const Home: React.FC = () => {
 
   const taskCreationModal = useRef<HTMLIonModalElement>(null);
 
-  // TODO: fetch tasks from storage
-  const [tasks, setTasks] = useState<Task[]>([
-    {
-      title: "1 - Do the dishes",
-      description: "Do the dishes asap b4 family gets home"
-    },
-    {
-      title: "2 - Create a pixel art",
-      description: "Create a pixel art and sent to friend"
-    },
-    {
-      title: "3 - Develop app",
-      description: "Develop the tasks app"
-    }
-  ]);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  useEffect(() => {
+    StorageHandler.instance().getAllFromToday()
+      .then(res => {
+        const tempTasks: TaskItem[] = Object.entries(res).map(([id, taskInfo]) => ({
+          id, ...taskInfo
+        }));
+        setTasks(tempTasks);
+      })
+      .catch(err => console.log(err));
+  }, []);
 
   function handleReorder(event: CustomEvent<ItemReorderEventDetail>) {
     setTasks(event.detail.complete(tasks));

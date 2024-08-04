@@ -2,6 +2,12 @@ import { Drivers, Storage } from '@ionic/storage';
 
 import { Task } from '../types/interfaces';
 
+interface TaskListingFilter {
+    completed?: boolean;
+    date?: Date;
+}
+
+// TODO: decouple tasks methods from this class
 export class StorageHandler {
     private static _instance: StorageHandler;
     private readonly storage: Storage;
@@ -14,16 +20,23 @@ export class StorageHandler {
         this.storage.create();
     }
 
-    public async getAll() {
-        const tasks: Record<string, any> = {};
-        await this.storage.forEach(((key: string, value, index) => {
-            tasks[key] = value;
+    public async getAll(filter?: TaskListingFilter): Promise<Record<string, Task>> {
+        const tasks: Record<string, Task> = {};
+        await this.storage.forEach(((value, key, index) => {
+            // if(filter?.completed != undefined) {
+                
+            // } else {
+                tasks[key] = value;
+            // }
         }));
         return tasks;
     }
 
-    public getAllFromDate(date: Date) {
-
+    public getAllFromToday() {
+        return this.getAll({
+            completed: false,
+            date: new Date()
+        });
     }
 
     public get(id: string) {
@@ -32,6 +45,7 @@ export class StorageHandler {
 
     public set(date: Date, info: Task) {
         const id = date.getTime().toString();
+        info.completed = false;
         return this.storage.set(id, info);
     }
 
