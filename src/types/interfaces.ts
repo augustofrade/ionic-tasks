@@ -10,10 +10,7 @@ export interface Task {
     completed?: boolean;
 }
 
-export interface TaskItem {
+export interface SavedTask extends Task {
     id: string;
-    title: string;
-    description: string;
-    priority?: Priority;
-    date?: Date;
+    completed: boolean;
 }

@@ -1,6 +1,7 @@
 import { Drivers, Storage } from '@ionic/storage';
 
-import { Task } from '../types/interfaces';
+import { Task, SavedTask } from '../types/interfaces';
+import dayjs from 'dayjs';
 
 interface TaskListingFilter {
     completed?: boolean;
@@ -20,22 +21,33 @@ export class StorageHandler {
         this.storage.create();
     }
 
-    public async getAll(filter?: TaskListingFilter): Promise<Record<string, Task>> {
-        const tasks: Record<string, Task> = {};
-        await this.storage.forEach(((value, key, index) => {
-            // if(filter?.completed != undefined) {
-                
-            // } else {
-                tasks[key] = value;
-            // }
+    public async getAll(filter?: TaskListingFilter): Promise<SavedTask[]> {
+        const tasks: SavedTask[] = [];
+        await this.storage.forEach(((value: SavedTask, key, index) => {
+            tasks.push({ ...value, id: key });
         }));
-        return tasks;
+        if(filter) {
+            // TODO: create specific filtering private method
+            return tasks.filter(t => {
+                return (
+                    filter.date == undefined
+                    ? true
+                    : dayjs(t.date).isSame(filter.date, "day")
+                ) &&
+                (
+                    filter.completed == undefined
+                    ? true
+                    : filter.completed == t.completed
+                )
+            });
+        } else        
+            return tasks;
     }
 
     public getAllFromToday() {
         return this.getAll({
-            completed: false,
-            date: new Date()
+            date: new Date(),
+            completed: false
         });
     }
 

@@ -19,7 +19,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import NewTaskFAB from '../components/NewTaskFAB';
 import TaskCreationModal from '../components/TaskCreationModal';
-import { Task, TaskItem } from '../types/interfaces';
+import { SavedTask } from '../types/interfaces';
 import { StorageHandler } from '../api/StorageHandler';
 
 const Home: React.FC = () => {
@@ -35,14 +35,11 @@ const Home: React.FC = () => {
 
   const taskCreationModal = useRef<HTMLIonModalElement>(null);
 
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState<SavedTask[]>([]);
   useEffect(() => {
     StorageHandler.instance().getAllFromToday()
       .then(res => {
-        const tempTasks: TaskItem[] = Object.entries(res).map(([id, taskInfo]) => ({
-          id, ...taskInfo
-        }));
-        setTasks(tempTasks);
+        setTasks(res);
       })
       .catch(err => console.log(err));
   }, []);
@@ -72,9 +69,8 @@ const Home: React.FC = () => {
         <IonList>
           <IonReorderGroup disabled={false} onIonItemReorder={handleReorder}>
             {
-              // TODO: change key to task ID
               tasks.map(task => (
-                <IonItem key={task.title}>
+                <IonItem key={task.id}>
                   <IonLabel>{ task.title }</IonLabel>
                   <IonReorder slot="end"></IonReorder>
                 </IonItem>
