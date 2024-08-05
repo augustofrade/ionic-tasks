@@ -32,8 +32,9 @@ const TimePicker: React.FC<TimePickerProps> = (props) => {
 	};
 	const confirmDatepicker = () => {
 		datetime.current?.confirm();
-		const date = datetime.current!.value as string;
-		props.setTime(new Date(date));
+		const rawValue = datetime.current!.value as string | undefined;
+		const date = rawValue == undefined ? new Date() : new Date(rawValue);
+		props.setTime(date);
 		modal.current!.dismiss();
 	};
 

@@ -30,13 +30,16 @@ const TaskCreationModal: React.FC<TaskCreationProps> = (props) => {
         // TODO: add form validation
         const taskInfo: Task = {
             title: title!,
-            description: description!
+            description: description!,
+            reminder: false
         };
-        if(time && date) {
-            const taskDate = new Date(date);
-            taskDate.setHours(time.getHours(), time.getMinutes());
-            taskInfo.date = taskDate;
-        } else if(date) {
+        if(date) {
+            if(time) {
+                date.setHours(time.getHours(), time.getMinutes());
+                taskInfo.reminder = true;
+            } else {
+                date.setHours(0, 0, 0, 0);
+            }
             taskInfo.date = date;
         }
         if(priority) taskInfo.priority = priority;
