@@ -5,6 +5,7 @@ import { useRef } from "react";
 interface DatePickerProps {
 	date: Date | null;
 	setDate: React.Dispatch<React.SetStateAction<Date | null>>;
+	noBorder?: boolean;
 }
 
 const DatePicker: React.FC<DatePickerProps> = (props) => {
@@ -32,7 +33,12 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
 	
 	return (
 		<>
-			<IonChip outline={true} id="datepicker-chip" onClick={handleButtonPress}>
+			<IonChip
+				style={ props.noBorder ? { border: "none" } : {} }
+				outline={true}
+				id="datepicker-chip"
+				onClick={handleButtonPress}
+			>
 				<IonIcon icon={calendarOutline} />
 				<IonLabel>Date</IonLabel>
 				{

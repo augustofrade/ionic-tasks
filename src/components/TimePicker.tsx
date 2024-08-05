@@ -7,6 +7,7 @@ interface TimePickerProps {
 	setTime: React.Dispatch<React.SetStateAction<Date | null>>;
   	label?: string;
 	disabled: boolean;
+	noBorder?: boolean;
 }
 
 const TimePicker: React.FC<TimePickerProps> = (props) => {
@@ -39,7 +40,13 @@ const TimePicker: React.FC<TimePickerProps> = (props) => {
 	
 	return (
 		<>
-			<IonChip outline={true} disabled={props.disabled} id="timepicker-chip" onClick={handleButtonPress}>
+			<IonChip
+				style={ props.noBorder ? { border: "none" } : {} }
+				outline={true}
+				disabled={props.disabled}
+				id="timepicker-chip"
+				onClick={handleButtonPress}
+			>
 				<IonIcon icon={alarmOutline} />
 				<IonLabel>{ props.label ?? "Time" }</IonLabel>
 				{
