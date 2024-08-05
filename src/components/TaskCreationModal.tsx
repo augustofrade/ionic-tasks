@@ -23,6 +23,7 @@ const TaskCreationModal: React.FC<TaskCreationProps> = (props) => {
     function onSubmitSuccess() {
         props.showToast("Task saved successfully!");
         props.modalRef.current?.dismiss();
+        // TODO: refresh home page Tasks listing after saving a new task
     }
 
     function handleSubmit() {

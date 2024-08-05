@@ -2,6 +2,7 @@ import { Drivers, Storage } from '@ionic/storage';
 
 import { Task, SavedTask } from '../types/interfaces';
 import dayjs from 'dayjs';
+import { FilterOptions } from '../types/types';
 
 interface TaskListingFilter {
     completed?: boolean;
@@ -21,33 +22,38 @@ export class StorageHandler {
         this.storage.create();
     }
 
-    public async getAll(filter?: TaskListingFilter): Promise<SavedTask[]> {
+    private filter<T>(data: T[], filter: FilterOptions<T>): T[] {
+        const parsedFilter = Object.entries(filter);
+        return data.filter(item => {
+            let isItemValid = true;
+            for(const [key, value] of parsedFilter) {
+                if(!isItemValid) break;
+
+                const valueOfKey = item[key as keyof T]
+                
+                const filterFunction: Function = typeof value == "function" ? value as any : () => valueOfKey === value;
+                isItemValid = filterFunction(valueOfKey);
+            };
+            return isItemValid;
+        });
+    }
+
+    public async getAll(filter?: FilterOptions<SavedTask>): Promise<SavedTask[]> {
         const tasks: SavedTask[] = [];
         await this.storage.forEach(((value: SavedTask, key, index) => {
             tasks.push({ ...value, id: key });
         }));
         if(filter) {
-            // TODO: create specific filtering private method
-            return tasks.filter(t => {
-                return (
-                    filter.date == undefined
-                    ? true
-                    : dayjs(t.date).isSame(filter.date, "day")
-                ) &&
-                (
-                    filter.completed == undefined
-                    ? true
-                    : filter.completed == t.completed
-                )
-            });
+            return this.filter(tasks, filter);
         } else        
             return tasks;
     }
 
     public getAllFromToday() {
         return this.getAll({
-            date: new Date(),
-            completed: false
+            completed: false,
+            date: (value) => value != undefined && dayjs(new Date()).isSame(value, "day"),
+
         });
     }
 
