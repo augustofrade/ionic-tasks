@@ -57,8 +57,8 @@ export class StorageHandler {
         });
     }
 
-    public get(id: string) {
-
+    public get(id: string): Promise<SavedTask> {
+        return this.storage.get(id);
     }
 
     public set(date: Date, info: Task) {

@@ -70,7 +70,7 @@ const Home: React.FC = () => {
           <IonReorderGroup disabled={false} onIonItemReorder={handleReorder}>
             {
               tasks.map(task => (
-                <IonItem key={task.id}>
+                <IonItem key={task.id} routerLink={`/task/${task.id}`}>
                   <IonLabel>{ task.title }</IonLabel>
                   <IonReorder slot="end"></IonReorder>
                 </IonItem>
