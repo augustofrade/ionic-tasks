@@ -3,8 +3,8 @@ import { calendarOutline } from "ionicons/icons";
 import { useRef } from "react";
 
 interface DatePickerProps {
-	date: Date | null;
-	setDate: React.Dispatch<React.SetStateAction<Date | null>>;
+	date: string | null;
+	setDate: React.Dispatch<React.SetStateAction<string | null>>;
 	noBorder?: boolean;
 }
 
@@ -14,7 +14,7 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
 
 	function handleButtonPress() {
 		if(props.date == null)
-			props.setDate(new Date());
+			props.setDate(new Date().toISOString());
 	}
 
 	const resetDatepicker = () => {
@@ -25,8 +25,9 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
 	};
 	const confirmDatepicker = () => {
 		datetime.current?.confirm();
-		const date = datetime.current!.value as string;
-		props.setDate(new Date(date));
+		const rawValue = datetime.current!.value as string | undefined;
+		const date = rawValue == undefined ? new Date().toISOString() : rawValue;
+		props.setDate(date);
 		modal.current?.dismiss();
 	};
 
@@ -53,6 +54,8 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
 					presentation="date"
 					id="date-picker"
 					ref={datetime}
+					value={props.date}
+					onIonChange={e => props.setDate(e.target.value as string)}
 				>
 					<IonButtons slot="buttons">
 						<IonButton color="danger" onClick={resetDatepicker}>

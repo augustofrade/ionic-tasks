@@ -3,8 +3,8 @@ import { alarmOutline, calendarOutline } from 'ionicons/icons';
 import { useEffect, useRef } from 'react';
 
 interface TimePickerProps {
-	time: Date | null;
-	setTime: React.Dispatch<React.SetStateAction<Date | null>>;
+	time: string | null;
+	setTime: React.Dispatch<React.SetStateAction<string | null>>;
   	label?: string;
 	disabled: boolean;
 	noBorder?: boolean;
@@ -21,7 +21,7 @@ const TimePicker: React.FC<TimePickerProps> = (props) => {
 
 	function handleButtonPress() {
 		if(props.time == null)
-			props.setTime(new Date());
+			props.setTime(new Date().toISOString());
 	}
 
 	const resetDatepicker = () => {
@@ -30,10 +30,11 @@ const TimePicker: React.FC<TimePickerProps> = (props) => {
 		modal.current!.dismiss();
 
 	};
+
 	const confirmDatepicker = () => {
 		datetime.current?.confirm();
 		const rawValue = datetime.current!.value as string | undefined;
-		const date = rawValue == undefined ? new Date() : new Date(rawValue);
+		const date = rawValue == undefined ? new Date().toISOString() : rawValue;
 		props.setTime(date);
 		modal.current!.dismiss();
 	};
@@ -59,6 +60,8 @@ const TimePicker: React.FC<TimePickerProps> = (props) => {
 
 			<IonModal ref={modal} keepContentsMounted={true} trigger="timepicker-chip">
 				<IonDatetime
+					value={props.time}
+					onIonChange={(e) => props.setTime(e.target.value as string)}
 					presentation="time"
 					id="time-picker"
 					ref={datetime}

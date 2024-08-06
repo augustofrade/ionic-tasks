@@ -4,7 +4,7 @@ export interface Task {
     title: string;
     description: string;
     priority?: Priority;
-    date?: Date;
+    date?: string;
     labels?: string[]; // TODO: add label
     reminder?: boolean;
     completed?: boolean;

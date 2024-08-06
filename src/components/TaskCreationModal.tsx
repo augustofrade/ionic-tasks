@@ -16,8 +16,8 @@ interface TaskCreationProps {
 const TaskCreationModal: React.FC<TaskCreationProps> = (props) => {
     const [title, setTitle] = useState<string | undefined>(undefined);
     const [description, setDescription] = useState<string | undefined>(undefined);
-    const [date, setDate] = useState<Date | null>(null);
-    const [time, setTime] = useState<Date | null>(null);
+    const [date, setDate] = useState<string | null>(null);
+    const [time, setTime] = useState<string | null>(null);
     const [priority, setPriority] = useState<Priority | null>(null);
 
     function onSubmitSuccess() {
@@ -34,16 +34,18 @@ const TaskCreationModal: React.FC<TaskCreationProps> = (props) => {
             reminder: false
         };
         if(date) {
+            const dateObj = new Date(date);
             if(time) {
-                date.setHours(time.getHours(), time.getMinutes());
+                const timeObj = new Date(time);
+                dateObj.setHours(timeObj.getHours(), timeObj.getMinutes(),0 ,0);
                 taskInfo.reminder = true;
             } else {
-                date.setHours(0, 0, 0, 0);
+                dateObj.setHours(0, 0, 0, 0);
             }
-            taskInfo.date = date;
+            taskInfo.date = dateObj.toISOString();
         }
         if(priority) taskInfo.priority = priority;
-
+        
         StorageHandler.instance().set(new Date(), taskInfo)
         .then(onSubmitSuccess)
         .catch(err => props.showToast("Error while saving task"));
