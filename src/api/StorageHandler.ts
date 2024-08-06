@@ -68,7 +68,7 @@ export class StorageHandler {
     }
 
     public remove(id: string) {
-
+        return this.storage.remove(id);
     }
 
     public clear() {
