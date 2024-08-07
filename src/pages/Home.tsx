@@ -27,6 +27,7 @@ import TaskCreationModal from '../components/TaskCreationModal';
 import { SavedTask } from '../types/interfaces';
 import { StorageHandler } from '../api/StorageHandler';
 import { trash } from 'ionicons/icons';
+import TaskListItem from '../components/TaskListItem';
 
 const Home: React.FC = () => {
 
@@ -39,7 +40,7 @@ const Home: React.FC = () => {
     })
   }
 
-  const [presentAlert] = useIonAlert();
+  
 
   const taskCreationModal = useRef<HTMLIonModalElement>(null);
 
@@ -54,33 +55,6 @@ const Home: React.FC = () => {
       setTasks(res);
     })
     .catch(err => console.log(err));
-  }
-
-  function handleDeleteTask(id: string) {
-    StorageHandler.instance().remove(id)
-    .then(res => {
-      showToast("Task deleted successfully");
-      fetchTasks();
-    })
-    .catch(err => {
-      showToast("An error occured while trying to delete this task")
-    });
-  }
-
-  function onDeleteTask(id: string) {
-    presentAlert({
-      header: "Warning",
-      message: "Are you sure you want to delete this task?",
-      buttons: [
-        {
-          text: "Cancel"
-        },
-        {
-          text: "Delete",
-          handler: () => handleDeleteTask(id)
-        }
-      ]
-    });
   }
 
   function handleReorder(event: CustomEvent<ItemReorderEventDetail>) {
@@ -109,18 +83,13 @@ const Home: React.FC = () => {
           <IonReorderGroup disabled={false} onIonItemReorder={handleReorder}>
             {
               tasks.map(task => (
-                <IonItemSliding key={task.id}>
-                  <IonItem routerLink={`/task/${task.id}`}>
-                    <IonLabel>{ task.title }</IonLabel>
-                    <IonReorder slot="end"></IonReorder>
-                  </IonItem>
-
-                  <IonItemOptions>
-                    <IonItemOption color="danger" onClick={() => onDeleteTask(task.id)}>
-                      <IonIcon slot="icon-only" icon={trash} />
-                    </IonItemOption>
-                  </IonItemOptions>
-                </IonItemSliding>
+                <TaskListItem
+                  key={task.id}
+                  id={task.id}
+                  title={task.title}
+                  showToast={showToast}
+                  onUpdate={fetchTasks}
+                />
               ))
             }
           </IonReorderGroup>

@@ -58,12 +58,15 @@ export class StorageHandler {
     }
 
     public get(id: string): Promise<SavedTask> {
+        // TODO: set id on get
         return this.storage.get(id);
     }
 
-    public set(date: Date, info: Task) {
-        const id = date.getTime().toString();
-        info.completed = false;
+    public set(id: Date | string, info: Task) {
+        if(typeof id != "string") {
+            id = id.getTime().toString();
+            info.completed = false; // TODO: fix this
+        }
         return this.storage.set(id, info);
     }
 
@@ -73,6 +76,12 @@ export class StorageHandler {
 
     public clear() {
         
+    }
+
+    public async completeTask(id: string) {
+        const task = await this.get(id);
+        task.completed = true;
+        return await this.set(id, task);
     }
 
     public static instance() {
