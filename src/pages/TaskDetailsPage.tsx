@@ -8,16 +8,12 @@ import TimePicker from "../components/TimePicker";
 import { alarmOutline, calendarOutline, ellipsisVertical, flagOutline, pencilOutline, trashBinOutline } from "ionicons/icons";
 import dayjs from "dayjs";
 import { Priority } from "../types/enums";
+import SkeletonText from "../components/SkeletonText";
 
 interface TaskDetailsPageProps extends RouteComponentProps<{
 	id: string;
 }> {}
 
-const SkeletonText: React.FC<{ height?: number}> = ({ height }) => {
-	return (
-		<IonSkeletonText animated={true} style={{ height: height ?? 15 }} />
-	)
-}
 
 const TaskDetailsPage: React.FC<TaskDetailsPageProps> = ({ match }) => {
 
@@ -37,7 +33,6 @@ const TaskDetailsPage: React.FC<TaskDetailsPageProps> = ({ match }) => {
 	useIonViewDidEnter(() => {
 		StorageHandler.instance().get(match.params.id)
 		.then(res => {
-			res.labels = ["Work", "Study", "Gym", "Family", "Groceries", "Programming Stuff An"];
 			setInfo(res);
 		})
 		.catch(err => console.log(err));
@@ -109,7 +104,7 @@ const TaskDetailsPage: React.FC<TaskDetailsPageProps> = ({ match }) => {
 						<div className="ion-text-center">
 							{
 								info?.labels?.map(label => (
-									<IonChip className="ion-text-center" style={{ flex: 1 }}>{label}</IonChip>
+									<IonChip key={label}>{label}</IonChip>
 								))
 							}
 						</div>

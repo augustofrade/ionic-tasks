@@ -10,7 +10,8 @@ import { StorageHandler } from '../api/StorageHandler';
 
 interface TaskCreationProps {
     modalRef: React.RefObject<HTMLIonModalElement>;
-    showToast(msg: string): void;
+    onSuccess(): void;
+    onError(): void;
 }
 
 const TaskCreationModal: React.FC<TaskCreationProps> = (props) => {
@@ -21,7 +22,7 @@ const TaskCreationModal: React.FC<TaskCreationProps> = (props) => {
     const [priority, setPriority] = useState<Priority | null>(null);
 
     function onSubmitSuccess() {
-        props.showToast("Task saved successfully!");
+        props.onSuccess();
         props.modalRef.current?.dismiss();
         // TODO: refresh home page Tasks listing after saving a new task
     }
@@ -48,7 +49,7 @@ const TaskCreationModal: React.FC<TaskCreationProps> = (props) => {
         
         StorageHandler.instance().set(new Date(), taskInfo)
         .then(onSubmitSuccess)
-        .catch(err => props.showToast("Error while saving task"));
+        .catch(err => props.onError());
     }
     
     return (

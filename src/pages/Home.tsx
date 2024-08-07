@@ -126,7 +126,16 @@ const Home: React.FC = () => {
           </IonReorderGroup>
         </IonList>
 
-        <TaskCreationModal showToast={showToast} modalRef={taskCreationModal} />
+        <TaskCreationModal
+            modalRef={taskCreationModal}
+            onSuccess={() => {
+              showToast("Task saved successfully!");
+              fetchTasks();
+            }}
+            onError={() => {
+              showToast("Error while saving task")
+            }}
+          />
 
       </IonContent>
     </IonPage>
