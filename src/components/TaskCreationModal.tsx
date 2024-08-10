@@ -24,29 +24,29 @@ const TaskCreationModal: React.FC<TaskCreationProps> = (props) => {
     function onSubmitSuccess() {
         props.onSuccess();
         props.modalRef.current?.dismiss();
-        // TODO: refresh home page Tasks listing after saving a new task
     }
 
     function handleSubmit() {
         // TODO: add form validation
         const taskInfo: Task = {
             title: title!,
-            description: description!,
-            reminder: false
+            description: description!
         };
         if(date) {
             const dateObj = new Date(date);
+            dateObj.setHours(0, 0, 0, 0);
+            taskInfo.date = dateObj.toISOString();
             if(time) {
                 const timeObj = new Date(time);
-                dateObj.setHours(timeObj.getHours(), timeObj.getMinutes(),0 ,0);
-                taskInfo.reminder = true;
-            } else {
-                dateObj.setHours(0, 0, 0, 0);
+                dateObj.setHours(timeObj.getHours(), timeObj.getMinutes(), 0, 0);
+                taskInfo.reminder = {
+                    enabled: true,
+                    date: dateObj.toISOString()
+                };
             }
-            taskInfo.date = dateObj.toISOString();
         }
         if(priority) taskInfo.priority = priority;
-        
+
         StorageHandler.instance().set(new Date(), taskInfo)
         .then(onSubmitSuccess)
         .catch(err => props.onError());

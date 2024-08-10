@@ -23,7 +23,7 @@ const TaskDetailsPage: React.FC<TaskDetailsPageProps> = ({ match }) => {
 		? "Today"
 		: dayjs(info?.date).format("ddd, MMM D, YYYY") ;
 
-	const reminderLabel = info?.reminder ? dayjs(info.date).format("HH:mm") : "None";
+	const reminderLabel = info?.reminder ? dayjs(info.reminder.date).format("HH:mm") : "None";
 
 	// TODO: set priority display colors
 	const priorityLabel = info?.priority
