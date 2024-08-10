@@ -84,9 +84,13 @@ const Home: React.FC = () => {
             {
               tasks.map(task => (
                 <TaskListItem
+                  task={{
+                    id: task.id,
+                    title: task.title,
+                    reminder: task.reminder,
+                    date: task.date
+                  }}
                   key={task.id}
-                  id={task.id}
-                  title={task.title}
                   showToast={showToast}
                   onUpdate={fetchTasks}
                 />
