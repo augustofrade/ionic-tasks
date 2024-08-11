@@ -84,6 +84,12 @@ export class StorageHandler {
         return await this.set(id, task);
     }
 
+    public async restoreTask(id: string) {
+        const task = await this.get(id);
+        task.completed = false;
+        return await this.set(id, task); 
+    }
+
     public static instance() {
         if(!StorageHandler._instance) {
             StorageHandler._instance = new StorageHandler();

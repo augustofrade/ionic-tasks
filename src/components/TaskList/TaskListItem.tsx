@@ -1,4 +1,4 @@
-import { IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonNote, IonReorder, IonText, useIonAlert } from "@ionic/react";
+import { IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonNote, IonReorder, IonText, useIonAlert, useIonToast } from "@ionic/react";
 import { StorageHandler } from "../../api/StorageHandler";
 import { alarmOutline, checkmarkOutline, flagOutline, trash } from "ionicons/icons";
 import logo from "../assets/double-arrow-icon.svg";
@@ -15,6 +15,20 @@ interface TaskListItemProps {
 const TaskListItem: React.FC<TaskListItemProps> = (props) => {
 
 	const [presentAlert] = useIonAlert();
+	const [presentUndoToast] = useIonToast();
+	const showUndoToast = (id:string) => presentUndoToast({
+		duration: 3000,
+		position: "bottom",
+		message: "Task completed.",
+		buttons: [{
+			text: "Undo",
+			side: "end",
+			handler: () => {
+				StorageHandler.instance().restoreTask(id)
+				.then(res => props.onUpdate());
+			}
+		}]
+	})
 
 	function handleDeleteTask(id: string) {
 		StorageHandler.instance().remove(id)
@@ -45,7 +59,10 @@ const TaskListItem: React.FC<TaskListItemProps> = (props) => {
 
 	  function onCompleteTask(id: string) {
 		StorageHandler.instance().completeTask(id)
-		.then(res => props.onUpdate())
+		.then(res => {
+			props.onUpdate();
+			showUndoToast(id);
+		})
 		.catch(err => props.showToast("An error occured while trying to complete this task"));
 	  }
 
