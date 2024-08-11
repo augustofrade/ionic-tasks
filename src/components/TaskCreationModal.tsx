@@ -1,12 +1,25 @@
-import { IonButton, IonChip, IonContent, IonHeader, IonIcon, IonInput, IonLabel, IonModal, IonSelect, IonSelectOption, IonText, IonTextarea, IonTitle, IonToolbar } from '@ionic/react';
+import {
+    IonButton,
+    IonChip,
+    IonContent,
+    IonHeader,
+    IonIcon,
+    IonInput,
+    IonModal,
+    IonSelect,
+    IonSelectOption,
+    IonTextarea,
+    IonTitle,
+    IonToolbar,
+} from '@ionic/react';
+import { chevronForwardOutline, flagOutline } from 'ionicons/icons';
 import React, { useState } from 'react';
 
-import DatePicker from './DatePicker';
-import { alarmOutline, calendarOutline, chevronForwardOutline, flagOutline, heart } from 'ionicons/icons';
-import TimePicker from './TimePicker';
+import { StorageHandler } from '../api/StorageHandler';
 import { Priority } from '../types/enums';
 import { Task } from '../types/interfaces';
-import { StorageHandler } from '../api/StorageHandler';
+import DatePicker from './DatePicker';
+import TimePicker from './TimePicker';
 
 interface TaskCreationProps {
     modalRef: React.RefObject<HTMLIonModalElement>;

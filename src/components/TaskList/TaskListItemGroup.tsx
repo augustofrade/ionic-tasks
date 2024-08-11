@@ -1,5 +1,5 @@
-import { IonItemGroup, IonItemDivider, IonLabel } from '@ionic/react'
-import React from 'react'
+import { IonItemDivider, IonItemGroup, IonLabel } from '@ionic/react';
+import React from 'react';
 
 interface TaskListItemGroupProps {
     label: string;

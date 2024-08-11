@@ -1,14 +1,15 @@
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonSkeletonText, IonText, useIonViewWillEnter, useIonViewDidEnter, useIonViewDidLeave, useIonViewWillLeave, IonList, IonItem, IonIcon, IonLabel, IonBackButton, IonButtons, IonButton, IonPopover, IonChip } from "@ionic/react"
-import { useEffect, useState } from "react";
-import { SavedTask } from "../types/interfaces";
-import { StorageHandler } from "../api/StorageHandler";
-import { RouteComponentProps } from "react-router";
-import DatePicker from "../components/DatePicker";
-import TimePicker from "../components/TimePicker";
-import { alarmOutline, calendarOutline, ellipsisVertical, flagOutline, pencilOutline, trashBinOutline } from "ionicons/icons";
-import dayjs from "dayjs";
-import { Priority } from "../types/enums";
-import SkeletonText from "../components/SkeletonText";
+import {
+    IonBackButton, IonButton, IonButtons, IonChip, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList,
+    IonPage, IonPopover, IonText, IonTitle, IonToolbar, useIonViewDidEnter, useIonViewDidLeave } from '@ionic/react';
+import dayjs from 'dayjs';
+import { alarmOutline, calendarOutline, ellipsisVertical, flagOutline, pencilOutline, trashBinOutline } from 'ionicons/icons';
+import { useEffect, useState } from 'react';
+import { RouteComponentProps } from 'react-router';
+
+import { StorageHandler } from '../api/StorageHandler';
+import SkeletonText from '../components/SkeletonText';
+import { Priority } from '../types/enums';
+import { SavedTask } from '../types/interfaces';
 
 interface TaskDetailsPageProps extends RouteComponentProps<{
 	id: string;

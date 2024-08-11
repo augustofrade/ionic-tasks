@@ -1,6 +1,6 @@
-import { IonDatetimeButton, IonModal, IonDatetime, IonChip, IonIcon, IonLabel, IonButton, IonButtons } from "@ionic/react";
-import { calendarOutline } from "ionicons/icons";
-import { useRef } from "react";
+import { IonButton, IonButtons, IonChip, IonDatetime, IonDatetimeButton, IonIcon, IonLabel, IonModal } from '@ionic/react';
+import { calendarOutline } from 'ionicons/icons';
+import { useRef } from 'react';
 
 interface DatePickerProps {
 	date: string | null;

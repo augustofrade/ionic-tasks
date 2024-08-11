@@ -1,7 +1,7 @@
 import { Drivers, Storage } from '@ionic/storage';
-
-import { Task, SavedTask } from '../types/interfaces';
 import dayjs from 'dayjs';
+
+import { SavedTask, Task } from '../types/interfaces';
 import { FilterOptions } from '../types/types';
 
 interface TaskListingFilter {

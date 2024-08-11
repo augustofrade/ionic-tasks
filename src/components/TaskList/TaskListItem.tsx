@@ -1,9 +1,20 @@
-import { IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonNote, IonReorder, IonText, useIonAlert, useIonToast } from "@ionic/react";
-import { StorageHandler } from "../../api/StorageHandler";
-import { alarmOutline, checkmarkOutline, flagOutline, trash } from "ionicons/icons";
-import logo from "../assets/double-arrow-icon.svg";
-import { SavedTask } from "../../types/interfaces";
-import dayjs from "dayjs";
+import {
+    IonIcon,
+    IonItem,
+    IonItemOption,
+    IonItemOptions,
+    IonItemSliding,
+    IonLabel,
+    IonNote,
+    IonText,
+    useIonAlert,
+    useIonToast,
+} from '@ionic/react';
+import dayjs from 'dayjs';
+import { alarmOutline, checkmarkOutline, trash } from 'ionicons/icons';
+
+import { StorageHandler } from '../../api/StorageHandler';
+import { SavedTask } from '../../types/interfaces';
 
 interface TaskListItemProps {
 	task: Pick<SavedTask, "id" | "title" | "date" | "priority" | "reminder">;

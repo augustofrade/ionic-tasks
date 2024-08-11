@@ -1,5 +1,5 @@
 import { IonButton, IonButtons, IonChip, IonDatetime, IonDatetimeButton, IonIcon, IonLabel, IonModal } from '@ionic/react';
-import { alarmOutline, calendarOutline } from 'ionicons/icons';
+import { alarmOutline } from 'ionicons/icons';
 import { useEffect, useRef } from 'react';
 
 interface TimePickerProps {

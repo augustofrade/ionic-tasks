@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import { SavedTask } from '../../types/interfaces'
-import { IonItemDivider, IonItemGroup, IonLabel, IonList, IonReorderGroup, ItemReorderEventDetail } from '@ionic/react';
-import TaskListItem from './TaskListItem';
+import { IonList } from '@ionic/react';
 import dayjs from 'dayjs';
+import React, { useEffect, useState } from 'react';
+
+import { SavedTask } from '../../types/interfaces';
+import TaskListItem from './TaskListItem';
 import TaskListItemGroup from './TaskListItemGroup';
 
 interface TaskListProps {

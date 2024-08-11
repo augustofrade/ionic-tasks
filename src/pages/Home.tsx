@@ -1,32 +1,13 @@
 import './Home.css';
 
-import {
-  IonContent,
-  IonHeader,
-  IonIcon,
-  IonItem,
-  IonItemOption,
-  IonItemOptions,
-  IonItemSliding,
-  IonLabel,
-  IonList,
-  IonPage,
-  IonReorder,
-  IonReorderGroup,
-  IonTitle,
-  IonToast,
-  IonToolbar,
-  ItemReorderEventDetail,
-  useIonAlert,
-  useIonToast,
-} from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, useIonToast } from '@ionic/react';
 import { useEffect, useRef, useState } from 'react';
 
+import { StorageHandler } from '../api/StorageHandler';
 import NewTaskFAB from '../components/NewTaskFAB';
 import TaskCreationModal from '../components/TaskCreationModal';
-import { SavedTask } from '../types/interfaces';
-import { StorageHandler } from '../api/StorageHandler';
 import TaskList from '../components/TaskList/TaskList';
+import { SavedTask } from '../types/interfaces';
 
 const Home: React.FC = () => {
 
