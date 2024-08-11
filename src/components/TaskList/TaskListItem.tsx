@@ -1,8 +1,8 @@
 import { IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonNote, IonReorder, IonText, useIonAlert } from "@ionic/react";
-import { StorageHandler } from "../api/StorageHandler";
+import { StorageHandler } from "../../api/StorageHandler";
 import { alarmOutline, checkmarkOutline, flagOutline, trash } from "ionicons/icons";
 import logo from "../assets/double-arrow-icon.svg";
-import { SavedTask } from "../types/interfaces";
+import { SavedTask } from "../../types/interfaces";
 import dayjs from "dayjs";
 
 interface TaskListItemProps {
@@ -49,7 +49,6 @@ const TaskListItem: React.FC<TaskListItemProps> = (props) => {
 		.catch(err => props.showToast("An error occured while trying to complete this task"));
 	  }
 
-	  // TODO: make reorder work
 	  // TODO: add priority label
 	return (
 		<IonItemSliding key={props.task.id}>
@@ -67,7 +66,6 @@ const TaskListItem: React.FC<TaskListItemProps> = (props) => {
 						</>
 					}
 				</IonLabel>
-				<IonReorder slot="end"></IonReorder>
 			</IonItem>
 			
 			<IonItemOptions side="start">

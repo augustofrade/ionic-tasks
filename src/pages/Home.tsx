@@ -26,9 +26,7 @@ import NewTaskFAB from '../components/NewTaskFAB';
 import TaskCreationModal from '../components/TaskCreationModal';
 import { SavedTask } from '../types/interfaces';
 import { StorageHandler } from '../api/StorageHandler';
-import { trash } from 'ionicons/icons';
-import TaskListItem from '../components/TaskListItem';
-import TaskList from '../components/TaskList';
+import TaskList from '../components/TaskList/TaskList';
 
 const Home: React.FC = () => {
 
@@ -55,13 +53,7 @@ const Home: React.FC = () => {
     .then(res => {
       setTasks(res);
     })
-    .catch(err => console.log(err));
-  }
-
-  function handleReorder(event: CustomEvent<ItemReorderEventDetail>) {
-    setTasks(event.detail.complete(tasks));
-
-    event.detail.complete();
+    .catch(err => showToast("An error occured while loading tasks"));
   }
 
   return (
@@ -84,7 +76,6 @@ const Home: React.FC = () => {
           data={tasks}
           onUpdate={fetchTasks}
           showToast={showToast}
-          onItemReorder={handleReorder}
         />
 
         <TaskCreationModal
