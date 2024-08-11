@@ -53,7 +53,7 @@ const TaskCreationModal: React.FC<TaskCreationProps> = (props) => {
     }
     
     return (
-        <IonModal ref={props.modalRef} trigger="open-taskcreation-modal" initialBreakpoint={0.5} breakpoints={[ 0.5, 0.7 ]}>
+        <IonModal ref={props.modalRef} trigger="open-taskcreation-modal" initialBreakpoint={0.9} breakpoints={[ 0, 0.25, 0.5, 0.75, 0.9 ]}>
             <IonHeader className="ion-no-border">
                 <IonToolbar>
                 <IonTitle>New Task</IonTitle>

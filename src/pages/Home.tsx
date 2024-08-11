@@ -28,6 +28,7 @@ import { SavedTask } from '../types/interfaces';
 import { StorageHandler } from '../api/StorageHandler';
 import { trash } from 'ionicons/icons';
 import TaskListItem from '../components/TaskListItem';
+import TaskList from '../components/TaskList';
 
 const Home: React.FC = () => {
 
@@ -79,25 +80,12 @@ const Home: React.FC = () => {
 
         <NewTaskFAB />
 
-        <IonList>
-          <IonReorderGroup disabled={false} onIonItemReorder={handleReorder}>
-            {
-              tasks.map(task => (
-                <TaskListItem
-                  task={{
-                    id: task.id,
-                    title: task.title,
-                    reminder: task.reminder,
-                    date: task.date
-                  }}
-                  key={task.id}
-                  showToast={showToast}
-                  onUpdate={fetchTasks}
-                />
-              ))
-            }
-          </IonReorderGroup>
-        </IonList>
+        <TaskList
+          data={tasks}
+          onUpdate={fetchTasks}
+          showToast={showToast}
+          onItemReorder={handleReorder}
+        />
 
         <TaskCreationModal
             modalRef={taskCreationModal}
