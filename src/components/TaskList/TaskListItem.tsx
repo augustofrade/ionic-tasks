@@ -81,7 +81,7 @@ const TaskListItem: React.FC<TaskListItemProps> = (props) => {
 	return (
 		<IonItemSliding key={props.task.id}>
 			<IonItem routerLink={`/task/${props.task.id}`} lines="full">
-				<IonLabel>
+				<IonLabel style={{ marginLeft: 10 }}>
 					<IonText>{ props.task.title }</IonText>
 					{
 						props.task.reminder &&

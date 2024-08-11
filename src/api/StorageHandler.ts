@@ -52,7 +52,7 @@ export class StorageHandler {
     public getAllFromToday() {
         return this.getAll({
             completed: false,
-            date: (value) => value == undefined || dayjs(new Date()).isSame(value, "day"),
+            date: (value) => value == undefined || dayjs(value).isAfter(new Date(), "day") == false,
 
         });
     }

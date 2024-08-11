@@ -1,6 +1,6 @@
 import './Home.css';
 
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, useIonToast } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, useIonToast, useIonViewWillEnter } from '@ionic/react';
 import { useEffect, useRef, useState } from 'react';
 
 import { StorageHandler } from '../api/StorageHandler';
@@ -20,12 +20,10 @@ const Home: React.FC = () => {
     })
   }
 
-  
-
   const taskCreationModal = useRef<HTMLIonModalElement>(null);
 
   const [tasks, setTasks] = useState<SavedTask[]>([]);
-  useEffect(() => {
+  useIonViewWillEnter(() => {
     fetchTasks();
   }, []);
 
