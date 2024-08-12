@@ -1,6 +1,10 @@
-import { IonButton, IonButtons, IonChip, IonDatetime, IonDatetimeButton, IonFooter, IonIcon, IonItem, IonLabel, IonList, IonModal, IonNote, IonToolbar } from '@ionic/react';
+import { IonButton, IonButtons, IonChip, IonDatetime, IonFooter, IonIcon,
+	IonItem, IonLabel, IonList, IonModal, IonNote, IonToolbar } from '@ionic/react';
 import dayjs from 'dayjs';
-import { alarmOutline, banOutline, calendarClearOutline, calendarNumberOutline, calendarOutline, happyOutline } from 'ionicons/icons';
+import { alarmOutline, banOutline, calendarClearOutline, calendarNumberOutline, calendarOutline,
+    happyOutline,
+    todayOutline,
+} from 'ionicons/icons';
 import { useRef, useState } from 'react';
 
 interface DatePickerProps {
@@ -9,7 +13,20 @@ interface DatePickerProps {
 	noBorder?: boolean;
 }
 
-const datePickerOptions = [
+interface DatePickerOptions {
+	icon: string;
+	text: string;
+	value: string | null;
+	valueLabel(): string;
+}
+
+const datePickerOptions: Array<DatePickerOptions> = [
+	{
+		icon: todayOutline,
+		text: "Today",
+		value: new Date().toISOString(),
+		valueLabel() { return dayjs(this.value).format("ddd"); }
+	},
 	{
 		icon: alarmOutline,
 		text: "Tomorrow",
@@ -38,12 +55,10 @@ const datePickerOptions = [
 ];
 
 const DatePicker: React.FC<DatePickerProps> = (props) => {
-	const datetime = useRef<HTMLIonDatetimeElement | null>(null);
 	const modal = useRef<HTMLIonModalElement | null>(null);
-	const [currentDate, setCurrentDate] = useState<Date | undefined>();
+	const [currentDate, setCurrentDate] = useState<string | null>(null);
 
-
-	function getLabel() {
+	function getDateLabel() {
 		if(currentDate == undefined)
 			return null;
 		else if(dayjs().isBefore(currentDate, "year"))
@@ -51,15 +66,19 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
 		return dayjs(currentDate).format("MMM D");
 	}
 
-	function handleButtonPress() {
+	function handleChipClick() {
 		if(props.date == null)
 			props.setDate(new Date().toISOString());
 	}
 
-	function setValue() {
-
+	function cancelAndClose() {
+		modal.current?.dismiss()
 	}
 
+	function setDateAndClose() {
+		props.setDate(currentDate);
+		modal.current?.dismiss();
+	}
 	
 	return (
 		<>
@@ -67,23 +86,28 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
 				style={ props.noBorder ? { border: "none" } : {} }
 				outline={true}
 				id="datepicker-chip"
-				onClick={handleButtonPress}
+				onClick={handleChipClick}
 			>
 				<IonIcon icon={calendarOutline} />
-				<IonLabel>{getLabel() ?? "Date"}</IonLabel>
+				<IonLabel>{getDateLabel() ?? "Date"}</IonLabel>
 
 			</IonChip>
 
-			<IonModal style={{ height: "auto" }} ref={modal} keepContentsMounted={true} trigger="datepicker-chip" initialBreakpoint={1} breakpoints={[0, 1]}>
+			<IonModal style={{ height: "auto" }} ref={modal} trigger="datepicker-chip" initialBreakpoint={1} breakpoints={[0, 1]}>
 				<div>
 					<IonList>
 						<IonItem lines="full">
 							<IonIcon slot="start" icon={calendarClearOutline} />
-							<IonLabel>{getLabel() ?? "No date"}</IonLabel>
+							<IonLabel>{getDateLabel() ?? "No date"}</IonLabel>
 						</IonItem>
 						{
 							datePickerOptions.map(op => (
-								<IonItem lines="none" key={op.text}>
+								<IonItem
+									key={op.text}
+									lines="none"
+									onClick={() => setCurrentDate(op.value)}
+									button
+								>
 									<IonIcon color="primary" slot="start" icon={op.icon} />
 									<IonLabel>{op.text}</IonLabel>
 									<IonNote style={{ fontSize: 15 }} slot="end">
@@ -97,15 +121,20 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
 						size="cover"
 						presentation="date"
 						id="date-picker"
+						value={currentDate}
+						onIonChange={(e) => setCurrentDate(e.target.value as string)}
 						>
 					</IonDatetime>
+					
+					<hr style={{ backgroundColor: "rgba(0, 0, 0, 0.13)" }} />
+
 					<IonFooter className="ion-no-border">
 						<IonToolbar>
 							<IonButtons slot="end">
-								<IonButton color="primary" onClick={() => modal.current?.dismiss()}>
+								<IonButton color="primary" onClick={cancelAndClose}>
 									Cancel
 								</IonButton>
-								<IonButton color="primary">
+								<IonButton color="primary" onClick={setDateAndClose}>
 									Save
 								</IonButton>
 							</IonButtons>

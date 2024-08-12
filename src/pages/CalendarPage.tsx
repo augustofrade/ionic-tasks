@@ -26,7 +26,7 @@ const CalendarPage = () => {
     function fetchTasks() {
         StorageHandler.instance().getAll()
         .then(res => {
-          setTasks(res);
+          setTasks(res.reverse());
         })
         .catch(err => showToast("An error occured while loading tasks"));
       }

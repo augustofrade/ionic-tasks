@@ -30,7 +30,7 @@ const Home: React.FC = () => {
   function fetchTasks() {
     StorageHandler.instance().getAllFromToday()
     .then(res => {
-      setTasks(res);
+      setTasks(res.reverse());
     })
     .catch(err => showToast("An error occured while loading tasks"));
   }
