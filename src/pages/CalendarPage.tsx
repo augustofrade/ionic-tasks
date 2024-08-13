@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import TaskList from '../components/TaskList/TaskList';
 import { useState } from 'react';
 import { SavedTask } from '../types/interfaces';
-import { StorageHandler } from '../api/StorageHandler';
+import { TaskService } from '../services/TaskService';
 
 const CalendarPage = () => {
     const [tasks, setTasks] = useState<SavedTask[]>([]);
@@ -24,12 +24,12 @@ const CalendarPage = () => {
     });
 
     function fetchTasks() {
-        StorageHandler.instance().getAll()
+        TaskService.instance().getAll()
         .then(res => {
           setTasks(res.reverse());
         })
         .catch(err => showToast("An error occured while loading tasks"));
-      }
+    }
 
     return (
         <IonPage>

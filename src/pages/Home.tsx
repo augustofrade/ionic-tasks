@@ -1,13 +1,13 @@
 import './Home.css';
 
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, useIonToast, useIonViewWillEnter } from '@ionic/react';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
-import { StorageHandler } from '../api/StorageHandler';
 import NewTaskFAB from '../components/NewTaskFAB';
 import TaskCreationModal from '../components/TaskCreationModal';
 import TaskList from '../components/TaskList/TaskList';
 import { SavedTask } from '../types/interfaces';
+import { TaskService } from '../services/TaskService';
 
 const Home: React.FC = () => {
 
@@ -28,7 +28,7 @@ const Home: React.FC = () => {
   }, []);
 
   function fetchTasks() {
-    StorageHandler.instance().getAllFromToday()
+    TaskService.instance().getAllFromToday()
     .then(res => {
       setTasks(res.reverse());
     })

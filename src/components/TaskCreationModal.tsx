@@ -15,11 +15,11 @@ import {
 import { chevronForwardOutline, flagOutline } from 'ionicons/icons';
 import React, { useState } from 'react';
 
-import { StorageHandler } from '../api/StorageHandler';
 import { Priority } from '../types/enums';
 import { Task } from '../types/interfaces';
 import DatePicker from './DatePicker';
 import TimePicker from './TimePicker';
+import { TaskService } from '../services/TaskService';
 
 interface TaskCreationProps {
     modalRef: React.RefObject<HTMLIonModalElement>;
@@ -60,7 +60,7 @@ const TaskCreationModal: React.FC<TaskCreationProps> = (props) => {
         }
         if(priority) taskInfo.priority = priority;
 
-        StorageHandler.instance().set(new Date(), taskInfo)
+        TaskService.instance().create(taskInfo)
         .then(onSubmitSuccess)
         .catch(err => props.onError());
     }

@@ -6,10 +6,10 @@ import { alarmOutline, calendarOutline, ellipsisVertical, flagOutline, pencilOut
 import { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 
-import { StorageHandler } from '../api/StorageHandler';
 import SkeletonText from '../components/SkeletonText';
 import { Priority } from '../types/enums';
 import { SavedTask } from '../types/interfaces';
+import { TaskService } from '../services/TaskService';
 
 interface TaskDetailsPageProps extends RouteComponentProps<{
 	id: string;
@@ -32,7 +32,7 @@ const TaskDetailsPage: React.FC<TaskDetailsPageProps> = ({ match }) => {
 		: "Not defined";
 	
 	useIonViewDidEnter(() => {
-		StorageHandler.instance().get(match.params.id)
+		TaskService.instance().get(match.params.id)
 		.then(res => {
 			setInfo(res);
 		})

@@ -13,8 +13,8 @@ import {
 import dayjs from 'dayjs';
 import { alarmOutline, checkmarkOutline, trash } from 'ionicons/icons';
 
-import { StorageHandler } from '../../api/StorageHandler';
 import { SavedTask } from '../../types/interfaces';
+import { TaskService } from '../../services/TaskService';
 
 interface TaskListItemProps {
 	task: Pick<SavedTask, "id" | "title" | "date" | "priority" | "reminder">;
@@ -35,14 +35,14 @@ const TaskListItem: React.FC<TaskListItemProps> = (props) => {
 			text: "Undo",
 			side: "end",
 			handler: () => {
-				StorageHandler.instance().restoreTask(id)
+				TaskService.instance().restoreTask(id)
 				.then(res => props.onUpdate());
 			}
 		}]
 	})
 
 	function handleDeleteTask(id: string) {
-		StorageHandler.instance().remove(id)
+		TaskService.instance().remove(id)
 		.then(res => {
 		  props.showToast("Task deleted successfully");
 		  props.onUpdate();
@@ -69,7 +69,7 @@ const TaskListItem: React.FC<TaskListItemProps> = (props) => {
 	  }
 
 	  function onCompleteTask(id: string) {
-		StorageHandler.instance().completeTask(id)
+		TaskService.instance().completeTask(id)
 		.then(res => {
 			props.onUpdate();
 			showUndoToast(id);
