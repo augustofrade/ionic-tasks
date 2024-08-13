@@ -1,10 +1,11 @@
-import { IonList } from '@ionic/react';
+import { IonIcon, IonList, IonText } from '@ionic/react';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 
 import { SavedTask } from '../../types/interfaces';
 import TaskListItem from './TaskListItem';
 import TaskListItemGroup from './TaskListItemGroup';
+import { addCircle } from 'ionicons/icons';
 
 interface TaskListProps {
     data: SavedTask[];
@@ -28,6 +29,7 @@ const TaskList: React.FC<TaskListProps> = (props) => {
     }, [props.data]);
 
   return (
+    <>
     <IonList>
         {
             Object.entries(mappedTasks).map(([date, tasks]) => {
@@ -54,6 +56,21 @@ const TaskList: React.FC<TaskListProps> = (props) => {
             })
         }
     </IonList>
+
+    {
+        Object.keys(mappedTasks).length == 0 &&
+        <div className='ion-text-center ion-padding' style={{ fontSize: 20, color: "#272a2f", fontWeight: 600 }}>
+            <IonText style={{ display: "block", marginBottom: 8 }}>
+                No tasks to be found!
+            </IonText>
+            <IonText>
+                Create a new one by<br/>pressing the
+                <IonIcon icon={addCircle} style={{ verticalAlign: "middle", margin: "0 4px" }} />
+                icon
+            </IonText>
+        </div>
+    }
+    </>
   )
 }
 
