@@ -7,7 +7,6 @@ import {
     IonLabel,
     IonNote,
     IonText,
-    useIonAlert,
     useIonToast,
 } from '@ionic/react';
 import dayjs from 'dayjs';
@@ -15,6 +14,7 @@ import { alarmOutline, checkmarkOutline, trash } from 'ionicons/icons';
 
 import { SavedTask } from '../../types/interfaces';
 import { TaskService } from '../../services/TaskService';
+import useDeleteTask from '../../hooks/useDeleteTask';
 
 interface TaskListItemProps {
 	task: Pick<SavedTask, "id" | "title" | "date" | "priority" | "reminder">;
@@ -24,9 +24,12 @@ interface TaskListItemProps {
 
 
 const TaskListItem: React.FC<TaskListItemProps> = (props) => {
-
-	const [presentAlert] = useIonAlert();
 	const [presentUndoToast] = useIonToast();
+
+	const onDeleteTask = useDeleteTask(() => {
+		props.onUpdate();
+	});
+
 	const showUndoToast = (id:string) => presentUndoToast({
 		duration: 3000,
 		position: "bottom",
@@ -40,33 +43,6 @@ const TaskListItem: React.FC<TaskListItemProps> = (props) => {
 			}
 		}]
 	})
-
-	function handleDeleteTask(id: string) {
-		TaskService.instance().remove(id)
-		.then(res => {
-		  props.showToast("Task deleted successfully");
-		  props.onUpdate();
-		})
-		.catch(err => {
-		  props.showToast("An error occured while trying to delete this task")
-		});
-	  }
-		
-	  function onDeleteTask(id: string) {
-		presentAlert({
-		  header: "Warning",
-		  message: "Are you sure you want to delete this task?",
-		  buttons: [
-			{
-			  text: "Cancel"
-			},
-			{
-			  text: "Delete",
-			  handler: () => handleDeleteTask(id)
-			}
-		  ]
-		});
-	  }
 
 	  function onCompleteTask(id: string) {
 		TaskService.instance().completeTask(id)

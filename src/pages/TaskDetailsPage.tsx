@@ -1,15 +1,16 @@
 import {
     IonBackButton, IonButton, IonButtons, IonChip, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList,
-    IonPage, IonPopover, IonText, IonTitle, IonToolbar, useIonViewDidEnter, useIonViewDidLeave } from '@ionic/react';
+    IonPage, IonPopover, IonText, IonTitle, IonToolbar, NavContext, useIonViewDidEnter, useIonViewDidLeave } from '@ionic/react';
 import dayjs from 'dayjs';
 import { alarmOutline, calendarOutline, ellipsisVertical, flagOutline, pencilOutline, trashBinOutline } from 'ionicons/icons';
-import { useEffect, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 
 import SkeletonText from '../components/SkeletonText';
 import { Priority } from '../types/enums';
 import { SavedTask } from '../types/interfaces';
 import { TaskService } from '../services/TaskService';
+import useDeleteTask from '../hooks/useDeleteTask';
 
 interface TaskDetailsPageProps extends RouteComponentProps<{
 	id: string;
@@ -18,7 +19,14 @@ interface TaskDetailsPageProps extends RouteComponentProps<{
 
 const TaskDetailsPage: React.FC<TaskDetailsPageProps> = ({ match }) => {
 
+	const { goBack } = useContext(NavContext);
+	const onDeleteTask = useDeleteTask(() => {
+		goBack();
+	});
+
+	
 	const [info, setInfo] = useState<SavedTask | null>(null);
+	const popoverRef = useRef<HTMLIonPopoverElement>(null);
 
 	const dateLabel = dayjs().isSame(info?.date, "day")
 		? "Today"
@@ -60,14 +68,17 @@ const TaskDetailsPage: React.FC<TaskDetailsPageProps> = ({ match }) => {
 						<IonButton shape="round" id="task-options">
 							<IonIcon icon={ellipsisVertical} />
 						</IonButton>
-						<IonPopover trigger="task-options">
+						<IonPopover trigger="task-options" ref={popoverRef}>
 							<IonContent>
 								<IonList>
-									<IonItem lines="none">
+									<IonItem lines="none" button onClick={() => {
+										popoverRef.current!.dismiss();
+										onDeleteTask(match.params.id);
+										}}>
 										<IonIcon icon={trashBinOutline} slot="start" />
 										<IonLabel>Delete</IonLabel>
 									</IonItem>
-									<IonItem lines="none">
+									<IonItem lines="none" button>
 										<IonIcon icon={pencilOutline} slot="start" />
 										<IonLabel>Edit</IonLabel>
 									</IonItem>
