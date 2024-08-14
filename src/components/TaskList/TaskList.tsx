@@ -1,4 +1,4 @@
-import { IonIcon, IonList, IonText } from '@ionic/react';
+import { IonIcon, IonList, IonRefresher, IonRefresherContent, IonText, RefresherEventDetail } from '@ionic/react';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 
@@ -51,8 +51,19 @@ const TaskList: React.FC<TaskListProps> = (props) => {
         return <DefaultNotFoundMessage />;
     }
 
+    function handleRefresh(e: CustomEvent<RefresherEventDetail>) {
+        setTimeout(() => {
+            props.onUpdate();
+            e.detail.complete();
+        }, 300);
+    }
+
     return (
         <>
+        <IonRefresher slot="fixed" pullFactor={0.5} pullMin={100} pullMax={200} onIonRefresh={handleRefresh}>
+            <IonRefresherContent></IonRefresherContent>
+        </IonRefresher>
+
         <IonList>
             {
                 Object.entries(mappedTasks).map(([date, tasks]) => {
