@@ -1,25 +1,24 @@
 import {
     IonButton,
-    IonChip,
     IonContent,
     IonHeader,
     IonIcon,
     IonInput,
     IonModal,
-    IonSelect,
-    IonSelectOption,
     IonTextarea,
     IonTitle,
     IonToolbar,
 } from '@ionic/react';
-import { chevronForwardOutline, flagOutline } from 'ionicons/icons';
+import { save } from 'ionicons/icons';
 import React, { useState } from 'react';
 
+import { TaskService } from '../services/TaskService';
 import { Priority } from '../types/enums';
 import { Task } from '../types/interfaces';
 import DatePicker from './DatePicker';
+import PrioritySelect from './PrioritySelect';
+import SectionDivider from './SectionDivider';
 import TimePicker from './TimePicker';
-import { TaskService } from '../services/TaskService';
 
 interface TaskCreationProps {
     modalRef: React.RefObject<HTMLIonModalElement>;
@@ -36,6 +35,11 @@ const TaskCreationModal: React.FC<TaskCreationProps> = (props) => {
 
     function onSubmitSuccess() {
         props.onSuccess();
+        setTitle(undefined);
+        setDescription(undefined);
+        setDate(null);
+        setTime(null);
+        setPriority(null);
         props.modalRef.current?.dismiss();
     }
 
@@ -66,7 +70,12 @@ const TaskCreationModal: React.FC<TaskCreationProps> = (props) => {
     }
     
     return (
-        <IonModal ref={props.modalRef} trigger="open-taskcreation-modal" initialBreakpoint={0.9} breakpoints={[ 0, 0.25, 0.5, 0.75, 0.9 ]}>
+        <IonModal
+            ref={props.modalRef}
+            trigger="open-taskcreation-modal"
+            initialBreakpoint={0.9}
+            breakpoints={[ 0, 0.25, 0.5, 0.75, 0.9 ]}
+        >
             <IonHeader className="ion-no-border">
                 <IonToolbar>
                 <IonTitle>New Task</IonTitle>
@@ -80,9 +89,8 @@ const TaskCreationModal: React.FC<TaskCreationProps> = (props) => {
                     required={true}
                     className="ion-margin-bottom"
                     value={title}
-                    onIonChange={(e) => setTitle(e.detail.value as string)}
+                    onIonInput={(e) => setTitle(e.target.value as string)}
                 >
-
                 </IonInput>
                 
                 <IonTextarea
@@ -93,38 +101,20 @@ const TaskCreationModal: React.FC<TaskCreationProps> = (props) => {
                     className="ion-margin-bottom"
                     value={description}
                     onIonChange={(e) => setDescription(e.detail.value as string)}
-                    
                 >
-                
                 </IonTextarea>
 
-                <div className='ion-margin-bottom'>
+                <div className='ion-margin-bottom' style={{ overflowX: "auto", whiteSpace: "nowrap" }}>
                     <DatePicker date={date} setDate={setDate} />
                     <TimePicker time={time} setTime={setTime} label={"Reminder"} disabled={date == null} />
+                    <PrioritySelect value={priority} onItemClick={setPriority} />
                 </div>
 
-                <IonChip outline={true}>
-                    <IonIcon icon={flagOutline} />
-                    <IonSelect
-                        interface="popover"
-                        placeholder="No priority"
-                        value={priority}
-                        onIonChange={(e) => setPriority(e.detail.value)}
-                    >
-                        {
-                            Object.entries(Priority).map(([k, v]) => ( <IonSelectOption key={k} value={k}>{v}</IonSelectOption> ))
-                        }
-                    </IonSelect>
-                </IonChip>
-
-                {
-                    //TODO: add labels selection
-                }
-
+                <SectionDivider />
 
                 <div style={{ textAlign: "right" }}>
-                    <IonButton onClick={handleSubmit}>
-                        <IonIcon slot="end" icon={chevronForwardOutline}></IonIcon>
+                    <IonButton onClick={handleSubmit} disabled={title == undefined || title == ""}>
+                        <IonIcon slot="end" icon={save}></IonIcon>
                         Save
                     </IonButton>
                 </div>
