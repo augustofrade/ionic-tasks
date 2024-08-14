@@ -11,7 +11,7 @@ export class TaskService implements ITaskService {
     ) {}
 
     public getAll(filter?: FilterOptions<SavedTask>): Promise<SavedTask[]> {
-        return this.repository.getAll();
+        return this.repository.getAll(filter);
     }
 
     public getAllFromToday() {

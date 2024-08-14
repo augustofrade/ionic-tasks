@@ -16,9 +16,10 @@ import { IonReactRouter } from '@ionic/react-router';
 import { Redirect, Route } from 'react-router-dom';
 
 import Home from './pages/Home';
-import { todayOutline, calendarNumberOutline, personOutline } from 'ionicons/icons';
+import { todayOutline, calendarNumberOutline, personOutline, searchOutline } from 'ionicons/icons';
 import TaskDetailsPage from './pages/TaskDetailsPage';
 import CalendarPage from './pages/CalendarPage';
+import SearchPage from './pages/SearchPage';
 
 /* Core CSS required for Ionic components to work properly */
 /* Basic CSS for apps built with Ionic */
@@ -49,6 +50,9 @@ const App: React.FC = () => (
           <Route exact path="/tasks">
             <CalendarPage />
           </Route>
+          <Route exact path="/search">
+            <SearchPage />
+          </Route>
 
           <Route path="/task/:id" component={TaskDetailsPage} />
         </IonRouterOutlet>
@@ -63,7 +67,11 @@ const App: React.FC = () => (
             <IonIcon icon={calendarNumberOutline} />
             <IonLabel>Calendar</IonLabel>
           </IonTabButton>
-          
+
+          <IonTabButton tab="search" href="/search">
+            <IonIcon icon={searchOutline} />
+            <IonLabel>Search</IonLabel>
+          </IonTabButton>
 
           <IonTabButton tab="details" href="/details">
             <IonIcon icon={personOutline} />
