@@ -1,0 +1,11 @@
+.horizontal-list {
+    text-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.horizontal-list::-webkit-scrollbar {
+    background: transparent; /* Chrome / Safari / Webkit */
+    width: 0px;
+}
