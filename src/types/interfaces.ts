@@ -8,10 +8,9 @@ export interface TaskReminder {
 
 export interface Task {
     title: string;
-    description: string;
+    description?: string;
     priority?: Priority;
     date?: string;
-    labels?: string[]; // TODO: add label
     completed?: boolean;
     reminder?: TaskReminder;
 }

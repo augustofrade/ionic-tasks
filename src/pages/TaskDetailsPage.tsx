@@ -113,14 +113,6 @@ const TaskDetailsPage: React.FC<TaskDetailsPageProps> = ({ match }) => {
 							</IonItem>
 						</IonList>
 
-						<div className="ion-text-center">
-							{
-								info?.labels?.map(label => (
-									<IonChip key={label}>{label}</IonChip>
-								))
-							}
-						</div>
-
 						<div className="ion-margin-top">
 							<IonText style={{ textAlign: "justify", display: "block" }}>{ info?.description }</IonText>
 						</div>
