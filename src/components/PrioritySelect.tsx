@@ -7,10 +7,10 @@ import { Priority } from '../types/enums';
 
 interface PrioritySelectProps {
 	value: Priority | null;
-	onItemClick(value: Priority | null): void;
+	setValue(value: Priority | null): void;
 }
 
-const PrioritySelect: React.FC<PrioritySelectProps> = ({ value, onItemClick }) => {
+const PrioritySelect: React.FC<PrioritySelectProps> = ({ value, setValue }) => {
 	const [popoverOpen, setPopoverOpen] = useState(false);
 	const popover = useRef<HTMLIonPopoverElement>(null);
 
@@ -38,7 +38,7 @@ const PrioritySelect: React.FC<PrioritySelectProps> = ({ value, onItemClick }) =
 									key={k}
 									button
 									onClick={() => {
-										onItemClick(k as Priority);
+										setValue(k as Priority);
 										setPopoverOpen(false);
 										popover.current!.dismiss();
 									}}

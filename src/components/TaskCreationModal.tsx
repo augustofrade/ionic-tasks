@@ -107,7 +107,7 @@ const TaskCreationModal: React.FC<TaskCreationProps> = (props) => {
                 <div className='ion-margin-bottom' style={{ overflowX: "auto", whiteSpace: "nowrap" }}>
                     <DatePicker date={date} setDate={setDate} />
                     <TimePicker time={time} setTime={setTime} label={"Reminder"} disabled={date == null} />
-                    <PrioritySelect value={priority} onItemClick={setPriority} />
+                    <PrioritySelect value={priority} setValue={setPriority} />
                 </div>
 
                 <SectionDivider />
