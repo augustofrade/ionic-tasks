@@ -1,14 +1,7 @@
-import {
-    IonButton,
-    IonContent,
-    IonHeader,
-    IonIcon,
-    IonInput,
-    IonModal,
-    IonTextarea,
-    IonTitle,
-    IonToolbar,
-} from '@ionic/react';
+import '../css/autoHeightModal.css';
+import '../css/horizontalList.css';
+
+import { IonButton, IonHeader, IonIcon, IonInput, IonModal, IonTextarea, IonTitle, IonToolbar } from '@ionic/react';
 import { save } from 'ionicons/icons';
 import React, { useState } from 'react';
 
@@ -33,21 +26,24 @@ const TaskCreationModal: React.FC<TaskCreationProps> = (props) => {
     const [time, setTime] = useState<string | null>(null);
     const [priority, setPriority] = useState<Priority | null>(null);
 
-    function onSubmitSuccess() {
-        props.onSuccess();
+    function resetModal() {
         setTitle(undefined);
         setDescription(undefined);
         setDate(null);
         setTime(null);
         setPriority(null);
+    }
+
+    function onSubmitSuccess() {
+        props.onSuccess();
+        resetModal();
         props.modalRef.current?.dismiss();
     }
 
     function handleSubmit() {
-        // TODO: add form validation
         const taskInfo: Task = {
-            title: title!,
-            description: description!
+            title: title!.trim(),
+            description: description
         };
         if(date) {
             const dateObj = new Date(date);
@@ -68,20 +64,22 @@ const TaskCreationModal: React.FC<TaskCreationProps> = (props) => {
         .then(onSubmitSuccess)
         .catch(err => props.onError());
     }
-    
+
     return (
         <IonModal
+            className="auto-height-modal"
             ref={props.modalRef}
             trigger="open-taskcreation-modal"
-            initialBreakpoint={0.9}
-            breakpoints={[ 0, 0.25, 0.5, 0.75, 0.9 ]}
+            initialBreakpoint={1}
+            breakpoints={[ 0, 1 ]}
+            handle={false}
         >
             <IonHeader className="ion-no-border">
                 <IonToolbar>
                 <IonTitle>New Task</IonTitle>
                 </IonToolbar>
             </IonHeader>
-            <IonContent fullscreen className="ion-padding">
+            <div className="ion-padding">
                 <IonInput
                     label="Task title"
                     labelPlacement="floating"
@@ -104,9 +102,9 @@ const TaskCreationModal: React.FC<TaskCreationProps> = (props) => {
                 >
                 </IonTextarea>
 
-                <div className='ion-margin-bottom' style={{ overflowX: "auto", whiteSpace: "nowrap" }}>
+                <div className="ion-margin-bottom horizontal-list">
                     <DatePicker date={date} setDate={setDate} />
-                    <TimePicker time={time} setTime={setTime} label={"Reminder"} disabled={date == null} />
+                    <TimePicker time={time} setTime={setTime} disabled={date == null} />
                     <PrioritySelect value={priority} setValue={setPriority} />
                 </div>
 
@@ -118,8 +116,7 @@ const TaskCreationModal: React.FC<TaskCreationProps> = (props) => {
                         Save
                     </IonButton>
                 </div>
-
-            </IonContent>
+            </div>
         </IonModal>
     )
 }

@@ -23,7 +23,7 @@ const PrioritySelect: React.FC<PrioritySelectProps> = ({ value, setValue }) => {
 		<span>
 			<IonChip outline={true} onClick={openPopover}>
 				<IonIcon icon={flagOutline} />
-				<IonText>{ value ?? "Priority" }</IonText>
+				<IonText>{ Priority[value as unknown as keyof typeof Priority] ?? "Priority" }</IonText>
 
 				<IonPopover
 					isOpen={popoverOpen}

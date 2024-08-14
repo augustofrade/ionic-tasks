@@ -7,6 +7,8 @@ import { alarmOutline, banOutline, calendarClearOutline, calendarNumberOutline, 
 } from 'ionicons/icons';
 import { useRef, useState } from 'react';
 
+import "../css/autoHeightModal.css";
+
 interface DatePickerProps {
 	date: string | null;
 	setDate: React.Dispatch<React.SetStateAction<string | null>>;
@@ -56,19 +58,14 @@ const datePickerOptions: Array<DatePickerOptions> = [
 
 const DatePicker: React.FC<DatePickerProps> = (props) => {
 	const modal = useRef<HTMLIonModalElement | null>(null);
-	const [currentDate, setCurrentDate] = useState<string | null>(null);
+	const [currentDate, setCurrentDate] = useState<string | null>(props.date);
 
-	function getDateLabel() {
-		if(currentDate == undefined)
-			return null;
-		else if(dayjs().isBefore(currentDate, "year"))
-			return dayjs(currentDate).format("MMM D YY");
-		return dayjs(currentDate).format("MMM D");
-	}
-
-	function handleChipClick() {
-		if(props.date == null)
-			props.setDate(new Date().toISOString());
+	function getDateLabel(date: string | null, fallback: string) {
+		if(!date)
+			return fallback;
+		else if(dayjs().isBefore(date, "year"))
+			return dayjs(date).format("MMM D YY");
+		return dayjs(date).format("MMM D");
 	}
 
 	function cancelAndClose() {
@@ -86,19 +83,26 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
 				style={ props.noBorder ? { border: "none" } : {} }
 				outline={true}
 				id="datepicker-chip"
-				onClick={handleChipClick}
 			>
 				<IonIcon icon={calendarOutline} />
-				<IonLabel>{getDateLabel() ?? "Date"}</IonLabel>
+				<IonLabel>{ getDateLabel(props.date, "Date") }</IonLabel>
 
 			</IonChip>
 
-			<IonModal style={{ height: "auto" }} ref={modal} trigger="datepicker-chip" initialBreakpoint={1} breakpoints={[0, 1]}>
+			<IonModal
+				style={{ height: "auto" }}
+				ref={modal}
+				trigger="datepicker-chip"
+				initialBreakpoint={1}
+				breakpoints={[0, 1]}
+				className="auto-height-modal"
+				handle={false}
+			>
 				<div>
 					<IonList>
 						<IonItem lines="full">
 							<IonIcon slot="start" icon={calendarClearOutline} />
-							<IonLabel>{getDateLabel() ?? "No date"}</IonLabel>
+							<IonLabel>{getDateLabel(currentDate, "No date")}</IonLabel>
 						</IonItem>
 						{
 							datePickerOptions.map(op => (

@@ -1,11 +1,13 @@
-import { IonButton, IonButtons, IonChip, IonDatetime, IonDatetimeButton, IonIcon, IonLabel, IonModal } from '@ionic/react';
+import '../css/autoHeightModal.css';
+
+import { IonButton, IonButtons, IonChip, IonDatetime, IonIcon, IonLabel, IonModal } from '@ionic/react';
+import dayjs from 'dayjs';
 import { alarmOutline } from 'ionicons/icons';
 import { useEffect, useRef } from 'react';
 
 interface TimePickerProps {
 	time: string | null;
 	setTime: React.Dispatch<React.SetStateAction<string | null>>;
-  	label?: string;
 	disabled: boolean;
 	noBorder?: boolean;
 }
@@ -24,20 +26,26 @@ const TimePicker: React.FC<TimePickerProps> = (props) => {
 			props.setTime(new Date().toISOString());
 	}
 
-	const resetDatepicker = () => {
+	function resetDatepicker() {
 		datetime.current?.reset();
 		props.setTime(null);
 		modal.current!.dismiss();
 
 	};
 
-	const confirmDatepicker = () => {
+	function confirmDatepicker() {
 		datetime.current?.confirm();
 		const rawValue = datetime.current!.value as string | undefined;
 		const date = rawValue == undefined ? new Date().toISOString() : rawValue;
 		props.setTime(date);
 		modal.current!.dismiss();
 	};
+
+	function getTimeLabel() {
+		if(props.time == undefined)
+			return "Reminder";
+		return dayjs(props.time).format("HH:mm");
+	}
 
 	
 	return (
@@ -50,21 +58,25 @@ const TimePicker: React.FC<TimePickerProps> = (props) => {
 				onClick={handleButtonPress}
 			>
 				<IonIcon icon={alarmOutline} />
-				<IonLabel>{ props.label ?? "Time" }</IonLabel>
-				{
-					props.time &&
-					<IonDatetimeButton className="ion-justify-content-start" datetime="time-picker"></IonDatetimeButton>
-				}
-
+				<IonLabel>{ getTimeLabel() }</IonLabel>
 			</IonChip>
 
-			<IonModal ref={modal} keepContentsMounted={true} trigger="timepicker-chip">
+			<IonModal
+				className="auto-height-modal"
+				ref={modal}
+				keepContentsMounted={true}
+				trigger="timepicker-chip"
+				initialBreakpoint={1}
+				breakpoints={[0, 1]}
+				handle={false}
+			>
 				<IonDatetime
 					value={props.time}
 					onIonChange={(e) => props.setTime(e.target.value as string)}
 					presentation="time"
 					id="time-picker"
 					ref={datetime}
+					
 				>
 					<IonButtons slot="buttons">
 						<IonButton color="danger" onClick={resetDatepicker}>
