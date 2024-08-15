@@ -1,15 +1,21 @@
-import { IonContent, IonDatetime, IonHeader, IonPage, IonTitle, IonToolbar, useIonToast, useIonViewWillEnter } from '@ionic/react';
+import {
+    IonContent,
+    IonDatetime,
+    IonHeader,
+    IonPage,
+    IonTitle,
+    IonToolbar,
+    useIonToast,
+    useIonViewWillEnter,
+} from '@ionic/react';
 import dayjs from 'dayjs';
 
 import TaskList from '../components/TaskList/TaskList';
-import { useState } from 'react';
-import { SavedTask } from '../types/interfaces';
-import { TaskService } from '../services/TaskService';
+import useTaskFetcher from '../hooks/useTaskFetcher';
 
 const CalendarPage = () => {
-    const [tasks, setTasks] = useState<SavedTask[]>([]);
+    const { tasks, fetchTasks } = useTaskFetcher();
 
-    // TODO: move hook / task fetching to global state (remove from home too)
     const [presentToast] = useIonToast();
     const showToast = (message: string) => {
         presentToast({
@@ -22,14 +28,6 @@ const CalendarPage = () => {
     useIonViewWillEnter(() => {
         fetchTasks();
     });
-
-    function fetchTasks() {
-        TaskService.instance().getAll()
-        .then(res => {
-          setTasks(res.reverse());
-        })
-        .catch(err => showToast("An error occured while loading tasks"));
-    }
 
     return (
         <IonPage>

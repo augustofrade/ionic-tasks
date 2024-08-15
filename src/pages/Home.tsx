@@ -1,13 +1,12 @@
 import './Home.css';
 
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, useIonToast, useIonViewWillEnter } from '@ionic/react';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 
 import NewTaskFAB from '../components/NewTaskFAB';
 import TaskCreationModal from '../components/TaskCreationModal';
 import TaskList from '../components/TaskList/TaskList';
-import { SavedTask } from '../types/interfaces';
-import { TaskService } from '../services/TaskService';
+import useTaskFetcher from '../hooks/useTaskFetcher';
 
 const Home: React.FC = () => {
 
@@ -22,18 +21,10 @@ const Home: React.FC = () => {
 
   const taskCreationModal = useRef<HTMLIonModalElement>(null);
 
-  const [tasks, setTasks] = useState<SavedTask[]>([]);
+  const { tasks, fetchTasksFromToday } = useTaskFetcher();
   useIonViewWillEnter(() => {
-    fetchTasks();
+    fetchTasksFromToday();
   }, []);
-
-  function fetchTasks() {
-    TaskService.instance().getAllFromToday()
-    .then(res => {
-      setTasks(res.reverse());
-    })
-    .catch(err => showToast("An error occured while loading tasks"));
-  }
 
   return (
     <IonPage>
@@ -53,7 +44,7 @@ const Home: React.FC = () => {
 
         <TaskList
           data={tasks}
-          onUpdate={fetchTasks}
+          onUpdate={fetchTasksFromToday}
           showToast={showToast}
         />
 
@@ -61,7 +52,7 @@ const Home: React.FC = () => {
             modalRef={taskCreationModal}
             onSuccess={() => {
               showToast("Task saved successfully!");
-              fetchTasks();
+              fetchTasksFromToday();
             }}
             onError={() => {
               showToast("Error while saving task")

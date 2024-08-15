@@ -1,11 +1,12 @@
-import { IonContent, IonHeader, IonPage, IonSearchbar, IonTitle, IonToolbar, useIonToast, useIonViewWillEnter } from "@ionic/react"
-import { useState } from "react";
-import { TaskService } from "../services/TaskService";
-import { SavedTask } from "../types/interfaces";
-import TaskList from "../components/TaskList/TaskList";
+import { IonContent, IonHeader, IonLoading, IonPage, IonSearchbar, IonTitle, IonToolbar, useIonToast } from '@ionic/react';
+import { useState } from 'react';
+
+import TaskList from '../components/TaskList/TaskList';
+import useTaskFetcher from '../hooks/useTaskFetcher';
 
 const SearchPage = () => {
     const [search, setSearch] = useState("");
+    const { tasks, fetchTasks, isLoading } = useTaskFetcher();
 
     const [presentToast] = useIonToast();
     const showToast = (message: string) => {
@@ -16,19 +17,13 @@ const SearchPage = () => {
         })
     }
 
-    const [tasks, setTasks] = useState<SavedTask[]>([]);
-
-    function handleSearchInput(val: string) {
-        setSearch(val);
-        fetchTasks(val);
+    function fetchWithQuery(query: string) {
+        fetchTasks({ title: (value) => value.includes(query ?? value) });
     }
 
-    function fetchTasks(query: string) {
-        TaskService.instance().getAll({ title: (value) => value.includes(query) })
-        .then(res => {
-            setTasks(res.reverse());
-        })
-        .catch(err => showToast("An error occured while searching for tasks"));
+    function handleSearchInput(query: string) {
+        setSearch(query);
+        fetchWithQuery(query);
     }
 
     return (
@@ -48,11 +43,12 @@ const SearchPage = () => {
                 </IonToolbar>
             </IonHeader>
             <IonContent>
+            <IonLoading isOpen={isLoading} />
             {
                 search != "" &&
                 <TaskList
                     data={tasks}
-                    onUpdate={() => fetchTasks(search)}
+                    onUpdate={() => fetchWithQuery(search)}
                     showToast={showToast}
                     message={"No tasks found"}
                 />
