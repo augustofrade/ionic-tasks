@@ -27,7 +27,7 @@ export class TaskService implements ITaskService {
     }
 
     public create(info: Task): Promise<SavedTask> {
-        const id = new Date().getDate().toString();
+        const id = new Date().getTime().toString();
         info.completed = false;
         return this.repository.set(id, info);
     }

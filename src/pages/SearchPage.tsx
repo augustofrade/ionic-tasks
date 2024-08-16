@@ -11,21 +11,22 @@ const SearchPage = () => {
     const [presentToast] = useIonToast();
     const showToast = (message: string) => {
         presentToast({
-        duration: 2500,
-        position: "bottom",
-        message: message
+            duration: 2500,
+            position: "bottom",
+            message: message
         })
     }
 
-    function fetchWithQuery(query: string) {
-        fetchTasks({ title: (value) => value.includes(query ?? value) });
+    function fetchWithQuery(val: string) {
+        const query = val != "" ? val.toUpperCase() : search.toUpperCase();
+        fetchTasks({ title: (value) => value.toUpperCase().includes(query) });
     }
 
-    function handleSearchInput(query: string) {
-        setSearch(query);
-        fetchWithQuery(query);
+    function handleSearchInput(val: string) {
+        setSearch(val);
+        fetchWithQuery(val);
     }
-
+    
     return (
         <IonPage>
             <IonHeader className="ion-no-border">
@@ -38,7 +39,7 @@ const SearchPage = () => {
                     <IonSearchbar
                     value={search}
                     debounce={1000}
-                    onIonInput={(e) => handleSearchInput(e.target.value as string)}
+                    onIonInput={(e) => { handleSearchInput(e.target.value as string) }}
                     />
                 </IonToolbar>
             </IonHeader>
