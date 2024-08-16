@@ -17,6 +17,7 @@ import TaskList from '../components/TaskList/TaskList';
 import useTaskFetcher from '../hooks/useTaskFetcher';
 import { useState } from 'react';
 import { refreshOutline } from 'ionicons/icons';
+import NewTaskFAB from '../components/NewTaskFAB';
 
 const CalendarPage = () => {
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
@@ -82,6 +83,11 @@ const CalendarPage = () => {
                     onUpdate={() => fetchTasksByDate(selectedDate)}
                     showToast={showToast}
                     message={"No tasks found for the selected date"}
+                />
+
+                <NewTaskFAB
+                    showToast={showToast}
+                    fetchTasks={() => fetchTasksByDate(selectedDate)}
                 />
             </IonContent>
         </IonPage>

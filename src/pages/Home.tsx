@@ -1,10 +1,8 @@
 import './Home.css';
 
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, useIonToast, useIonViewWillEnter } from '@ionic/react';
-import { useRef } from 'react';
 
 import NewTaskFAB from '../components/NewTaskFAB';
-import TaskCreationModal from '../components/TaskCreationModal';
 import TaskList from '../components/TaskList/TaskList';
 import useTaskFetcher from '../hooks/useTaskFetcher';
 
@@ -18,8 +16,6 @@ const Home: React.FC = () => {
       message: message
     })
   }
-
-  const taskCreationModal = useRef<HTMLIonModalElement>(null);
 
   const { tasks, fetchTasksFromToday } = useTaskFetcher();
   useIonViewWillEnter(() => {
@@ -40,25 +36,16 @@ const Home: React.FC = () => {
           </IonToolbar>
         </IonHeader>
 
-        <NewTaskFAB />
+        <NewTaskFAB
+          showToast={showToast}
+          fetchTasks={fetchTasksFromToday}
+        />
 
         <TaskList
           data={tasks}
           onUpdate={fetchTasksFromToday}
           showToast={showToast}
         />
-
-        <TaskCreationModal
-            modalRef={taskCreationModal}
-            onSuccess={() => {
-              showToast("Task saved successfully!");
-              fetchTasksFromToday();
-            }}
-            onError={() => {
-              showToast("Error while saving task")
-            }}
-          />
-
       </IonContent>
     </IonPage>
   );
