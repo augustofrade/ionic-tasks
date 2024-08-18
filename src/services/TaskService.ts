@@ -40,8 +40,6 @@ export class TaskService implements ITaskService {
         return this.changeTaskStatus(id, false);
     }
 
-    
-
     public async changeTaskStatus(id: string, completed: boolean) {
         const task = await this.get(id);
         task.completed = completed;

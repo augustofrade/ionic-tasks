@@ -34,11 +34,7 @@ export class TaskRepository implements IRepository<SavedTask> {
         return this.storage.get(id);
     }
 
-    public set(id: Date | string, info: Task) {
-        if(typeof id != "string") {
-            id = id.getTime().toString();
-            info.completed = false; // TODO: fix this
-        }
+    public set(id: string, info: Task) {
         return this.storage.set(id, info);
     }
 
