@@ -77,7 +77,8 @@ const TaskList: React.FC<TaskListProps> = (props) => {
                                             id: task.id,
                                             title: task.title,
                                             reminder: task.reminder,
-                                            date: task.date
+                                            date: task.date,
+                                            priority: task.priority
                                         }}
                                         key={task.id}
                                         showToast={props.showToast}

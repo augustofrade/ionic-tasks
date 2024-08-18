@@ -16,6 +16,9 @@ import { SavedTask } from '../../types/interfaces';
 import { TaskService } from '../../services/TaskService';
 import useDeleteTask from '../../hooks/useDeleteTask';
 
+import "./TaskList.css";
+
+
 interface TaskListItemProps {
 	task: Pick<SavedTask, "id" | "title" | "date" | "priority" | "reminder">;
 	onUpdate: () => void;
@@ -44,26 +47,27 @@ const TaskListItem: React.FC<TaskListItemProps> = (props) => {
 		}]
 	})
 
-	  function onCompleteTask(id: string) {
+	function onCompleteTask(id: string) {
 		TaskService.instance().completeTask(id)
 		.then(res => {
 			props.onUpdate();
 			showUndoToast(id);
 		})
 		.catch(err => props.showToast("An error occured while trying to complete this task"));
-	  }
+	}
 
-	  // TODO: add priority label
+	const priorityColor = props.task.priority?.toLowerCase();
+
 	return (
-		<IonItemSliding key={props.task.id}>
+		<IonItemSliding key={props.task.id} className={priorityColor ? "task-item-" + priorityColor : "task-item"}>
 			<IonItem routerLink={`/task/${props.task.id}`} lines="full">
-				<IonLabel style={{ marginLeft: 10 }}>
+				<IonLabel className="task-item__label">
 					<IonText>{ props.task.title }</IonText>
 					{
 						props.task.reminder &&
 						<>
 							<br />
-							<IonNote style={{ display: "inline-flex", alignItems: "center", columnGap: 2 }}>
+							<IonNote className="task-item__reminder">
 								<IonIcon icon={alarmOutline} />
 								<IonText>{dayjs(props.task.reminder.date).format("HH:mm")}</IonText>
 							</IonNote>

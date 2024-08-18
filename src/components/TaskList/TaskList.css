@@ -1,0 +1,26 @@
+.task-item {
+    border-left: 5px solid rgba(0, 0, 0, 0);
+}
+
+.task-item-low {
+    border-left: 5px solid var(--ion-color-primary);
+}
+
+.task-item-medium {
+    border-left: 5px solid var(--ion-color-warning);
+}
+
+.task-item-high {
+    border-left: 5px solid var(--ion-color-danger);
+}
+
+
+.task-item__label {
+    margin-left: 5px !important;
+}
+
+.task-item__reminder {
+    display: inline-flex;
+    align-items: center;
+    column-gap: 2px;
+}
